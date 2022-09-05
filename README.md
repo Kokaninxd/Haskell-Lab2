@@ -1,1 +1,0 @@
-# Haskell Lab2
