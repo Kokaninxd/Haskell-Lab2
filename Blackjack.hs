@@ -3,29 +3,105 @@ module Blackjack where
 import Cards
 import RunGame
 
-
-
 aCard1 :: Card
-aCard1 = Card (Numeric 3) Hearts
+aCard1 = Card Ace Hearts
 
 aCard2 :: Card
-aCard2 = Card Jack Hearts 
+aCard2 = Card Ace Spades
 
+aCard3 :: Card
+aCard3 = Card (Numeric 7) Diamonds
+
+aCard4 :: Card
+aCard4 = Card Jack Clubs
+
+aCard5 :: Card
+aCard5 = Card (Numeric 3) Spades
+
+aCard6 :: Card
+aCard6 = Card (Numeric 10) Clubs
+
+aCard7 :: Card
+aCard7 = Card Queen Spades
 
 aHand :: Hand
-aHand = aCard1 : aCard2 : []
+aHand = [aCard1, aCard6]
+
+bHand :: Hand
+bHand = [aCard3, aCard4, aCard5]
+
+cHand :: Hand
+cHand = [aCard7, aCard3, aCard1]
+
+dHand :: Hand
+dHand = [aCard7, aCard6, aCard3]
+
+
+
 {-
 
-size hand2
-  = size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
-  = ...
-  = 2
+Task A1
 
 sizeSteps :: [Int]
 sizeSteps = [ size hand2
             , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
-            , ... -- add the remaining steps here
+            , 1 + size (Card Jack Spades : [])
+            , 1 + 1 + size []
+            , 1 + 1 + 0
             , 2
-            ]
+            ]-}
 
-            -}
+-- Task A2
+
+displayCard :: Card -> String
+displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
+
+--getRank takes the rank of a numeric card and makes it so that it doesn't print "Numeric"
+getRank :: Rank -> String
+getRank (Numeric n) = show n
+getRank r = show r
+
+display :: Hand -> String
+display [] = ""
+display (card:[]) = displayCard card
+display (card:hand) = displayCard card ++ ", " ++ display hand
+
+
+
+valueRank :: Rank -> Int
+valueRank (Numeric n) = n 
+valueRank Ace = 11
+valueRank _ = 10
+
+valueCard :: Card -> Int
+valueCard card = valueRank (rank card)
+
+numberOfAces :: Hand -> Int
+numberOfAces [] = 0
+numberOfAces ((Card Ace _):hand) = 1 + numberOfAces hand
+numberOfAces (_:hand) = numberOfAces hand
+
+--uses value' to determine 
+value :: Hand -> Int
+value hand 
+    |value' hand > 21 = value' hand - 10 * numberOfAces hand
+    |otherwise = value' hand
+
+--adds together the value of a hand 
+value' :: Hand -> Int
+value' [] = 0
+value' (card:hand) = valueCard card + value' hand
+
+
+gameOver :: Hand -> Bool
+gameOver hand 
+  |value hand > 21 = True
+  |otherwise = False
+
+--Checks if player has 
+winner :: Hand -> Hand -> Player
+winner player bank 
+  |gameOver player = Bank
+  |gameOver bank = Guest
+  |value player > value bank = Guest
+  |otherwise = Bank
