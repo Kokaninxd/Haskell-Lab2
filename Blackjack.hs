@@ -3,6 +3,19 @@ module Blackjack where
 import Cards
 import RunGame
 
+
+
+aCard1 :: Card
+aCard1 = Card (Numeric 3) Hearts
+
+aCard2 :: Card
+aCard2 = Card Jack Hearts 
+
+{-
+aHand :: Hand
+aHand = 
+
+
 size hand2
   = size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
   = ...
@@ -14,3 +27,5 @@ sizeSteps = [ size hand2
             , ... -- add the remaining steps here
             , 2
             ]
+
+            -}
