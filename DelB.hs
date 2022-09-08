@@ -108,23 +108,11 @@ winner player bank
 
 
 
---fullDeck :: Deck 
---fullDeck  = [(rank,suit) | rank <- [(Numeric 2)..(Numeric 10)], suit <- [Hearts .. Clubs]]
--- prop_size_fullDeck :: Bool
--- prop_size_fullDeck = size fullDeck == 52
-
-rank (Card Queen _)
+fullDeck :: Deck 
+fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
 
 
-
-
-
-
-
-
-
-
-
-
+prop_size_fullDeck :: Bool
+prop_size_fullDeck = size fullDeck == 52
 
 
