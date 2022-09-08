@@ -42,17 +42,18 @@ dHand = [aCard7, aCard6, aCard3]
 
 Task A1
 
+
 sizeSteps :: [Int]
-sizeSteps = [ size hand2
+sizeSteps = [ size hand2                                                     
             , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
             , 1 + size (Card Jack Spades : [])
             , 1 + 1 + size []
             , 1 + 1 + 0
             , 2
             ]-}
-
+---------------------------------------------------------------------------------------------
 -- Task A2
-
+--Shows a given card in a string format
 displayCard :: Card -> String
 displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
 
@@ -61,27 +62,31 @@ getRank :: Rank -> String
 getRank (Numeric n) = show n
 getRank r = show r
 
+-- Shows all the card in a given hand in a list
 display :: Hand -> String
 display [] = ""
 display (card:[]) = displayCard card
 display (card:hand) = displayCard card ++ ", " ++ display hand
-
-
-
+-----------------------------------------------------------------------------------------------
+-- Task A3
+--defines the value of ranks
 valueRank :: Rank -> Int
 valueRank (Numeric n) = n 
 valueRank Ace = 11
 valueRank _ = 10
 
+-- Determines the value of a card based on the valueRank function
 valueCard :: Card -> Int
 valueCard card = valueRank (rank card)
 
+-- Determines the number of Aces in a given hand
 numberOfAces :: Hand -> Int
 numberOfAces [] = 0
 numberOfAces ((Card Ace _):hand) = 1 + numberOfAces hand
 numberOfAces (_:hand) = numberOfAces hand
 
---uses value' to determine 
+--uses value' and numberOfAces to determine the value of a hand incase the hand contains any Aces.
+--if the hand value exceeds 21 and the hand contains Aces, the value of all Aces becomes 1.
 value :: Hand -> Int
 value hand 
     |value' hand > 21 = value' hand - 10 * numberOfAces hand
@@ -91,14 +96,16 @@ value hand
 value' :: Hand -> Int
 value' [] = 0
 value' (card:hand) = valueCard card + value' hand
-
-
+---------------------------------------------------------------------------------------------------
+-- Task A4
+--Checks if a hand value exceeds 21, if True the hand is busted and the Player loses
 gameOver :: Hand -> Bool
 gameOver hand 
   |value hand > 21 = True
   |otherwise = False
 
---Checks if player has 
+--Checks if Guest has busted, if true bank wins then checks the other way arround. 
+--Finally it determines the winner based on hand value with the bank winning incase value Player == value Bank
 winner :: Hand -> Hand -> Player
 winner player bank 
   |gameOver player = Bank
