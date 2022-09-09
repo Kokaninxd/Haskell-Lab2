@@ -39,18 +39,17 @@ dHand = [aCard7, aCard6, aCard3]
 
 
 {-
-
 Task A1
-
+Replicates the 'size' function line by line
+-}
 
 sizeSteps :: [Int]
-sizeSteps = [ size hand2                                                     
-            , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
-            , 1 + size (Card Jack Spades : [])
-            , 1 + 1 + size []
-            , 1 + 1 + 0
-            , 2
-            ]-}
+sizeSteps = [ size hand1
+            , size (Card (Numeric 4) Spades : (Card (Numeric 10) Spades : []))
+            , 1 + size (Card (Numeric 10) Spades : [])
+            , 1 + 1 + size [] 
+            , 1 + 1 + 0 
+            , 2     ]
 ---------------------------------------------------------------------------------------------
 -- Task A2
 --Shows a given card in a string format
