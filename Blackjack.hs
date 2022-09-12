@@ -52,7 +52,7 @@ sizeSteps = [ size hand2
             , 2
             ]-}
 ---------------------------------------------------------------------------------------------
--- Task A2
+  -- Task A2
 --Shows a given card in a string format
 displayCard :: Card -> String
 displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
@@ -112,3 +112,36 @@ winner player bank
   |gameOver bank = Guest
   |value player > value bank = Guest
   |otherwise = Bank
+
+
+
+
+fullDeck :: Deck 
+fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ 
+ [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
+
+
+prop_size_fullDeck :: Bool
+prop_size_fullDeck = size fullDeck == 52
+
+
+
+
+draw :: Deck -> Hand -> (Deck, Hand)
+draw []=1
+draw (x:xs) = Hand(x)+ Deck(xs)
+
+
+{-
+first :: (a, b) -> a
+first (x, y) = x
+
+
+
+displayDeck :: Deck -> String
+displayDeck fullDeck = 
+
+displayCard :: Card -> String
+displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
+
+-}

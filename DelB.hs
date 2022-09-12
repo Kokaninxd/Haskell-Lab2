@@ -116,11 +116,15 @@ fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
-{-
+
+
 
 draw :: Deck -> Hand -> (Deck, Hand)
-draw 
+draw []=1
+draw (x:xs) = Hand(x)+ Deck(xs)
 
+
+{-
 first :: (a, b) -> a
 first (x, y) = x
 
