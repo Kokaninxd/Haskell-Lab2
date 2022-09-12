@@ -10,7 +10,7 @@ aCard2 :: Card
 aCard2 = Card Ace Spades
 
 aCard3 :: Card
-aCard3 = Card (Numeric 7) Diamonds
+aCard3 = Card (Numeric 5) Diamonds
 
 aCard4 :: Card
 aCard4 = Card Jack Clubs
@@ -25,7 +25,7 @@ aCard7 :: Card
 aCard7 = Card Queen Spades
 
 aHand :: Hand
-aHand = [aCard1, aCard6]
+aHand = [aCard3, aCard3]
 
 bHand :: Hand
 bHand = [aCard3, aCard4, aCard5]
@@ -35,6 +35,7 @@ cHand = [aCard7, aCard3, aCard1]
 
 dHand :: Hand
 dHand = [aCard7, aCard6, aCard3]
+
 
 
 {-
@@ -112,8 +113,6 @@ winner player bank
   |otherwise = Bank
 
 
-
-
 fullDeck :: Deck 
 fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ 
  [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
@@ -126,3 +125,26 @@ prop_size_fullDeck = size fullDeck == 52
 draw :: Deck -> Hand -> (Deck, Hand)
 draw [] hand = error "draw: The deck is empty."
 draw deck hand = (tail(deck), [head(deck)] ++ hand)
+
+
+playBank :: Deck -> Hand -> Hand
+playBank deck hand
+  | value hand >= 16 = hand
+  | otherwise = playBank deck' hand'
+  where (deck', hand') = draw deck hand
+
+
+
+{-
+first :: (a, b) -> a
+first (x, y) = x
+
+
+
+displayDeck :: Deck -> String
+displayDeck fullDeck = 
+
+displayCard :: Card -> String
+displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
+
+-}
