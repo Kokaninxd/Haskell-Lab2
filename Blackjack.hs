@@ -10,7 +10,7 @@ aCard2 :: Card
 aCard2 = Card Ace Spades
 
 aCard3 :: Card
-aCard3 = Card (Numeric 7) Diamonds
+aCard3 = Card (Numeric 5) Diamonds
 
 aCard4 :: Card
 aCard4 = Card Jack Clubs
@@ -25,7 +25,7 @@ aCard7 :: Card
 aCard7 = Card Queen Spades
 
 aHand :: Hand
-aHand = [aCard1, aCard6]
+aHand = [aCard3, aCard3]
 
 bHand :: Hand
 bHand = [aCard3, aCard4, aCard5]
@@ -38,6 +38,7 @@ dHand = [aCard7, aCard6, aCard3]
 
 xHand :: Card -> Hand -> Hand
 xHand x y = x:y
+
 
 
 
@@ -115,50 +116,54 @@ winner player bank
   |value player > value bank = Guest
   |otherwise = Bank
 
-
-
 -- Task B1
+
+{-
+Creates a full deck of cards in numeric order
+-}
+
 fullDeck :: Deck 
 fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ 
  [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
 
-
+{-
+Checks wether a deck is full by containing 52 cards
+-}
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
 -- Task B2
 
+{-
+Function that draws the top card of the input deck and adds it into the input hand.
+-}
+
 draw :: Deck -> Hand -> (Deck, Hand)
 draw [] hand = error "draw: The deck is empty."
 draw deck hand = (tail(deck), [head(deck)] ++ hand)
 
+{-
+Simulates the Bank in Blackjack by drawing cards from a deck and adding them into an input hand
+until the value of the hand is more or equal to 16.
+-}
+playBank :: Deck -> Hand -> Hand
+playBank deck hand
+  | value hand >= 16 = hand
+  | otherwise = playBank deck' hand'
+  where (deck', hand') = draw deck hand
 
 
-
-
-
-bankHand=[]
-
-playBank :: Deck -> Hand
-playBank deck
-  | value bankHand < 16 = playBank bankHand
-  | otherwise = bankHand
-  where (deck', bankHand') = draw deck bankHand
-
-
---playBank' :: Deck -> Hand -> (Deck, Hand)
---playBank' deck hand = draw deck
 
 {-
-'playBank' deck bankHand
- draw fullDeck bankHand
- | 
-  playBank' bankHand =  [aCard2] ++ bankHand
-  -}
+first :: (a, b) -> a
+first (x, y) = x
 
 
 
-  
+displayDeck :: Deck -> String
+displayDeck fullDeck = 
 
-  
+displayCard :: Card -> String
+displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
 
+-}
