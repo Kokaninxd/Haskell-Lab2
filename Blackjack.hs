@@ -37,14 +37,13 @@ dHand :: Hand
 dHand = [aCard7, aCard6, aCard3]
 
 
-
 {-
 Task A1
 Replicates the 'size' function line by line
 -}
 
 sizeSteps :: [Int]
-sizeSteps = [ size hand1
+sizeSteps = [ size aHand
             , size (Card (Numeric 4) Spades : (Card (Numeric 10) Spades : []))
             , 1 + size (Card (Numeric 10) Spades : [])
             , 1 + 1 + size [] 
@@ -124,23 +123,6 @@ prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
 
-
-
 draw :: Deck -> Hand -> (Deck, Hand)
-draw []=1
-draw (x:xs) = Hand(x)+ Deck(xs)
-
-
-{-
-first :: (a, b) -> a
-first (x, y) = x
-
-
-
-displayDeck :: Deck -> String
-displayDeck fullDeck = 
-
-displayCard :: Card -> String
-displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
-
--}
+draw [] hand = error "draw: The deck is empty."
+draw deck hand = (tail(deck), [head(deck)] ++ hand)
