@@ -36,6 +36,10 @@ cHand = [aCard7, aCard3, aCard1]
 dHand :: Hand
 dHand = [aCard7, aCard6, aCard3]
 
+xHand :: Card -> Hand -> Hand
+xHand x y = x:y
+
+
 
 {-
 Task A1
@@ -113,7 +117,7 @@ winner player bank
 
 
 
-
+-- Task B1
 fullDeck :: Deck 
 fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ 
  [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
@@ -122,7 +126,39 @@ fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
+-- Task B2
 
 draw :: Deck -> Hand -> (Deck, Hand)
 draw [] hand = error "draw: The deck is empty."
 draw deck hand = (tail(deck), [head(deck)] ++ hand)
+
+
+
+
+
+
+bankHand=[]
+
+playBank :: Deck -> Hand
+playBank deck
+  | value bankHand < 16 = playBank bankHand
+  | otherwise = bankHand
+  where (deck', bankHand') = draw deck bankHand
+
+
+--playBank' :: Deck -> Hand -> (Deck, Hand)
+--playBank' deck hand = draw deck
+
+{-
+'playBank' deck bankHand
+ draw fullDeck bankHand
+ | 
+  playBank' bankHand =  [aCard2] ++ bankHand
+  -}
+
+
+
+  
+
+  
+
