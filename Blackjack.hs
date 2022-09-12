@@ -112,21 +112,30 @@ winner player bank
   |value player > value bank = Guest
   |otherwise = Bank
 
-
+{-
+Creates a full deck of cards in numeric order
+-}
 fullDeck :: Deck 
 fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ 
  [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
 
-
+{-
+Checks wether a deck is full by containing 52 cards
+-}
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
-
+{-
+Function that draws the top card of the input deck and adds it into the input hand.
+-}
 draw :: Deck -> Hand -> (Deck, Hand)
 draw [] hand = error "draw: The deck is empty."
 draw deck hand = (tail(deck), [head(deck)] ++ hand)
 
-
+{-
+Simulates the Bank in Blackjack by drawing cards from a deck and adding them into an input hand
+until the value of the hand is more or equal to 16.
+-}
 playBank :: Deck -> Hand -> Hand
 playBank deck hand
   | value hand >= 16 = hand
