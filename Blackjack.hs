@@ -146,14 +146,21 @@ draw deck hand = (tail(deck), [head(deck)] ++ hand)
 Simulates the Bank in Blackjack by drawing cards from a deck and adding them into an input hand
 until the value of the hand is more or equal to 16.
 -}
-playBank :: Deck -> Hand -> Hand
-playBank deck hand
-  | value hand >= 16 = hand
-  | otherwise = playBank deck' hand'
-  where (deck', hand') = draw deck hand
 
+--Task B3
+playBank :: Deck -> Hand 
+playBank deck 
+  | deck == [] = error "Empty deck!"
+  | otherwise = playBank' deck []
+
+
+playBank' deck bankHand
+  | value bankHand >= 16 = bankHand
+  | otherwise = playBank' deck' bankHand'
+  where (deck', bankHand') = draw deck bankHand
+
+-- Task B4
 newDeck = []
-
 
 shuffle :: [Double] -> Deck -> Deck
 shuffle list deck
@@ -163,6 +170,7 @@ shuffle list deck
   | otherwise            = shuffle list' deck'
   where list'            = tail list 
         deck'            = tail deck
+
 
 {-
 first :: (a, b) -> a
@@ -175,5 +183,4 @@ displayDeck fullDeck =
 
 displayCard :: Card -> String
 displayCard card =  (getRank (rank card)) ++ " of " ++ show (suit card) 
-
--}
+x-}
