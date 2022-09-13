@@ -152,7 +152,17 @@ playBank deck hand
   | otherwise = playBank deck' hand'
   where (deck', hand') = draw deck hand
 
+newDeck = []
 
+
+shuffle :: [Double] -> Deck -> Deck
+shuffle list deck
+  | deck == []           = newDeck
+  | list == []           = newDeck
+  | (head list) > 0.5    = (newDeck ++ [head deck]) ++ shuffle list' deck'
+  | otherwise            = shuffle list' deck'
+  where list'            = tail list 
+        deck'            = tail deck
 
 {-
 first :: (a, b) -> a
