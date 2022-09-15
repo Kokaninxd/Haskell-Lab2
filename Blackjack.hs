@@ -3,6 +3,7 @@ import Test.QuickCheck hiding (shuffle)
 
 import Cards
 import RunGame
+import Test.QuickCheck hiding (shuffle)
 
 aCard1 :: Card
 aCard1 = Card Ace Hearts
@@ -160,16 +161,40 @@ playBank' deck bankHand
   where (deck', bankHand') = draw deck bankHand
 
 -- Task B4
+
+
 newDeck = []
 
+{- Given a list of random doubles and a deck to shuffle we do the following:
+  1. If the input deck is empty, return the new deck
+  2. If the list of random doubles is empty, return te new deck
+  3. Otherwise we add a random card from the input deck and recursivly call shuffle again
+  but with the tail of the list and the deck without the drawn card.
+
+  The card is chosen by first calling cardPicker which determines the index of the card 
+  we want to draw based on the random double between 0 and 1.
+§§
+  After we have the index of the card we call drawCard which actually draws the card from
+  the input deck.
+-}
 shuffle :: [Double] -> Deck -> Deck
 shuffle list deck
   | deck == []           = newDeck
   | list == []           = newDeck
-  | (head list) > 0.5    = (newDeck ++ [head deck]) ++ shuffle list' deck'
-  | otherwise            = shuffle list' deck'
-  where list'            = tail list 
-        deck'            = tail deck
+  | otherwise            = ( newDeck ++ [card] ) ++ shuffle (tail list) deck'
+  where index = cardPicker (head list) 0 (length deck)
+        (card, deck') = drawCard index deck 
+
+{- Given an index i of a card and a deck we return that card and the deck without the card -}
+drawCard :: Int -> Deck -> (Card, Deck)
+drawCard i deck = ( deck !! (i), take i deck ++ drop (1 + i) deck )
+
+{- Given a double between 0 and 1, a step number and the size of the deck we return a card index based on the size of the deck -}
+cardPicker :: Double -> Int -> Int -> Int
+cardPicker rand step deckSize
+  | fromIntegral step / fromIntegral deckSize < rand && rand <= fromIntegral (step+1) / fromIntegral deckSize = step
+  | otherwise = cardPicker rand (step+1) deckSize 
+
 
 
 
