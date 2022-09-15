@@ -212,11 +212,11 @@ prop_shuffle card deck (Rand randomlist) =
     card `belongsTo` deck == card `belongsTo` shuffle randomlist deck
 
 
-{-
+
 prop_size_shuffle :: Rand -> Deck -> Bool
 prop_size_shuffle (Rand randomlist) deck = 
-     x == 
-      -}
+      length (shuffle randomlist fullDeck) == length newDeck 
+      
    
    
 
@@ -237,7 +237,7 @@ prop_size_shuffle (Rand randomlist) deck =
 
 
 
-{-
+
 implementation = Interface
   {  iFullDeck  = fullDeck
   ,  iValue     = value
@@ -253,6 +253,6 @@ implementation = Interface
 main :: IO ()
 main = runGame implementation
 
--}
+
 
 
