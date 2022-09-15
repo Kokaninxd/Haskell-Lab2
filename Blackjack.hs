@@ -3,7 +3,11 @@ import Test.QuickCheck hiding (shuffle)
 
 import Cards
 import RunGame
-import Test.QuickCheck hiding (shuffle)
+
+{- 
+Written by: Isac Åkesson Jansen, Robin Sanborn,  Jonatan Baar 
+Lab group: 27
+-}
 
 aCard1 :: Card
 aCard1 = Card Ace Hearts
@@ -42,8 +46,6 @@ xHand :: Card -> Hand -> Hand
 xHand x y = x:y
 
 
-
-
 {-
 Task A1
 Replicates the 'size' function line by line
@@ -56,7 +58,9 @@ sizeSteps = [ size aHand
             , 1 + 1 + size [] 
             , 1 + 1 + 0 
             , 2     ]
+
 ---------------------------------------------------------------------------------------------
+
   -- Task A2
 --Shows a given card in a string format
 displayCard :: Card -> String
@@ -105,9 +109,8 @@ value' (card:hand) = valueCard card + value' hand
 -- Task A4
 --Checks if a hand value exceeds 21, if True the hand is busted and the Player loses
 gameOver :: Hand -> Bool
-gameOver hand 
-  |value hand > 21 = True
-  |otherwise = False
+gameOver hand = value hand > 21
+
 
 --Checks if Guest has busted, if true bank wins then checks the other way arround. 
 --Finally it determines the winner based on hand value with the bank winning incase value Player == value Bank
@@ -117,6 +120,10 @@ winner player bank
   |gameOver bank = Guest
   |value player > value bank = Guest
   |otherwise = Bank
+
+---------------------------------------------------------------------------------------------------
+{- PART B START -}
+---------------------------------------------------------------------------------------------------
 
 -- Task B1
 
@@ -145,16 +152,18 @@ draw [] hand = error "draw: The deck is empty."
 draw deck hand = (tail(deck), [head(deck)] ++ hand)
 
 {-
-Simulates the Bank in Blackjack by drawing cards from a deck and adding them into an input hand
-until the value of the hand is more or equal to 16.
+Checks if deck is empty, if not we call playBank' to draw cards
 -}
-
 --Task B3
 playBank :: Deck -> Hand 
 playBank deck 
   | deck == [] = error "Empty deck!"
   | otherwise = playBank' deck []
 
+{-
+Simulates the Bank in Blackjack by drawing cards from a deck and adding them into an input hand
+until the value of the hand is more or equal to 16.
+-}
 playBank' deck bankHand
   | value bankHand >= 16 = bankHand
   | otherwise = playBank' deck' bankHand'
@@ -162,18 +171,18 @@ playBank' deck bankHand
 
 -- Task B4
 
-
+-- Declaring deck to add shuffled cards
 newDeck = []
 
 {- Given a list of random doubles and a deck to shuffle we do the following:
   1. If the input deck is empty, return the new deck
-  2. If the list of random doubles is empty, return te new deck
+  2. If the list of random doubles is empty, return the new deck
   3. Otherwise we add a random card from the input deck and recursivly call shuffle again
   but with the tail of the list and the deck without the drawn card.
 
   The card is chosen by first calling cardPicker which determines the index of the card 
   we want to draw based on the random double between 0 and 1.
-§§
+
   After we have the index of the card we call drawCard which actually draws the card from
   the input deck.
 -}
@@ -197,47 +206,27 @@ cardPicker rand step deckSize
 
 
 
-
-
 -- Task  B5
 
+-- Checks if card is in deck
 belongsTo :: Card -> Deck -> Bool
 c `belongsTo` []      = False
 c `belongsTo` (c':cs) = c == c' || c `belongsTo` cs
 
 
-
+-- Checks if there duplicate cards in the shuffled deck
 prop_shuffle :: Card -> Deck -> Rand -> Bool
 prop_shuffle card deck (Rand randomlist) =
     card `belongsTo` deck == card `belongsTo` shuffle randomlist deck
 
 
-{-
+-- Checks if the size of the shuffled deck is equal to the non-shuffled one
 prop_size_shuffle :: Rand -> Deck -> Bool
-prop_size_shuffle (Rand randomlist) deck = 
-     x == 
-      -}
-   
-   
+prop_size_shuffle (Rand randomlist) deck =
+  length deck == length (shuffle randomlist deck)
+      
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{-
+-- Task B6
 implementation = Interface
   {  iFullDeck  = fullDeck
   ,  iValue     = value
@@ -253,6 +242,6 @@ implementation = Interface
 main :: IO ()
 main = runGame implementation
 
--}
+
 
 
