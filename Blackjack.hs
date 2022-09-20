@@ -133,7 +133,8 @@ Creates a full deck of cards in numeric order
 
 fullDeck :: Deck 
 fullDeck  = [Card (Numeric x) y | x <- [2 .. 10], y <- [Hearts, Diamonds, Spades, Clubs]] ++ 
- [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
+  [Card x y | x <- [Jack, Queen, King, Ace], y <- [Hearts, Clubs, Spades, Diamonds]]
+
 
 {-
 Checks wether a deck is full by containing 52 cards
@@ -188,15 +189,13 @@ newDeck = []
 -}
 shuffle :: [Double] -> Deck -> Deck
 shuffle list deck
-  | deck == []           = newDeck
+  | deck == []           = newDeck 
   | list == []           = newDeck
-  | otherwise            = ( newDeck ++ [card] ) ++ shuffle (tail list) deck'
-  where index = cardPicker (head list) 0 (length deck)
-        (card, deck') = drawCard index deck 
-
-{- Given an index i of a card and a deck we return that card and the deck without the card -}
-drawCard :: Int -> Deck -> (Card, Deck)
-drawCard i deck = ( deck !! (i), take i deck ++ drop (1 + i) deck )
+  | (head list) > 0.5    = (newDeck ++ [head deck]) ++ shuffle list' deck'
+  | otherwise            = shuffle list' deck'
+  where list'            = tail list 
+        deck'            = tail deck
+  
 
 {- Given a double between 0 and 1, a step number and the size of the deck we return a card index based on the size of the deck -}
 cardPicker :: Double -> Int -> Int -> Int
@@ -220,13 +219,19 @@ prop_shuffle card deck (Rand randomlist) =
     card `belongsTo` deck == card `belongsTo` shuffle randomlist deck
 
 
--- Checks if the size of the shuffled deck is equal to the non-shuffled one
-prop_size_shuffle :: Rand -> Deck -> Bool
-prop_size_shuffle (Rand randomlist) deck =
-  length deck == length (shuffle randomlist deck)
-      
 
--- Task B6
+--size är samma innnan och efter du har shufflat
+
+prop_size_shuffle :: Rand -> Deck -> Bool
+prop_size_shuffle (Rand randomlist) deck = 
+  size deck == size(shuffle randomlist deck)
+ 
+      
+   
+
+
+
+
 implementation = Interface
   {  iFullDeck  = fullDeck
   ,  iValue     = value
